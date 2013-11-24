@@ -1,0 +1,19 @@
+{
+  "name": "wyicwx",
+  "version": "0.0.1",
+  "description": "easy to use utils for nodejs",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wyicwx/mutils.git"
+  },
+  "keywords": [
+    "utils",
+    "async"
+  ],
+  "author": "wyicwx",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/wyicwx/mutils/issues"
+  }
+}
