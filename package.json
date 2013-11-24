@@ -1,5 +1,5 @@
 {
-  "name": "wyicwx",
+  "name": "mutils",
   "version": "0.0.1",
   "description": "easy to use utils for nodejs",
   "main": "main.js",
@@ -15,5 +15,8 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/wyicwx/mutils/issues"
+  },
+  "dependencies": {
+    "underscore": "*"
   }
 }
