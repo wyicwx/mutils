@@ -36,7 +36,7 @@
 			self.doned[id] = true;
 			self.doneArgs[id] = args;
 			self.done();
-		}
+		};
 	}
 
 	function _checkDone(self) {
@@ -70,7 +70,7 @@
 				}
 				fn.apply(null, args);
 			}
-		}
+		};
 		this.done();
 	};
 	e.do = function(fn) {
@@ -86,31 +86,36 @@
  * 职责链对象
  * @example
  * 		var c = connect();
- * 			c.use(function(data, next) {
+ * 			c.use(function(data, next, done) {
  * 				//coding
+ * 			 	next(data); //传递给下一个链函数处理 
  * 			});
- * 			c.use(function(data, next) {
+ * 			c.use(function(data, next, done) {
  * 				//coding2
+ * 				done(data); //跳过后面的链函数直接调用fire
  * 			})
  * 			c.fire();
  */
 (function(e) {
 	function _next(stack, callback) {
 		var count = 0;
+		function done(arg) {
+			callback && callback(arg);
+		}
 		function next(arg) {
 			var fn = stack[count++];
 			if(fn) {
-				fn.handler(arg, next);
+				fn.handler(arg, next, done);
 			} else {
-				callback && callback(arg);
+				done(arg);
 			}
 		}
 		next();
-	};
+	}
 	
 	function connect() {
 		this.stack = [];
-	};
+	}
 
 	connect.prototype.use = function(fn) {
 		this.stack.push({handler : fn});
@@ -121,6 +126,7 @@
 		_next(this.stack, callback);
 	};
 
+	e.Connect = connect;
 	e.connect = function() {
 		return new connect();
 	};
