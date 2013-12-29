@@ -1,9 +1,9 @@
 var assert = require("assert");
 var utils = require("../utils.js");
 
-describe('connect', function() {
+describe('Connect', function() {
 
-	it('new connect和直接执行connect返回的对象必须是相同的', function(done) {
+	it('工厂化', function(done) {
 		var newconnect = new utils.connect();
 		var connect = utils.connect();
 
@@ -140,5 +140,106 @@ describe('connect', function() {
 		});
 	});
 
-	
+});
+
+describe('Do', function() {
+
+	it('工厂化', function(done) {
+		var newdo = new utils.do();
+		var mdo = utils.do();
+
+		assert.equal(newdo instanceof utils.Do, true);
+		assert.equal(mdo instanceof utils.Do, true);
+		done();
+	});
+
+	it('do参数传递', function(done) {
+		var app = utils.do();
+
+		app.do(function(done) {
+			done(1);
+		});
+
+		app.do(function(done) {
+			done(2);
+		});
+
+		app.done(function(a, b) {
+			assert.equal(a, 1);
+			assert.equal(b, 2);
+			done();
+		});
+	});
+
+	it('1000个函数同时执行', function(done) {
+		var app = utils.do();
+
+		for(var i = 0; i < 1000; i++) {
+			app.do(function(done) {
+				done(true);
+			});
+		}
+
+		app.done(function() {
+			var args = Array.prototype.slice.call(arguments);
+
+			assert.equal(args.length, 1000);
+			done();
+		});
+	});
+
+	it('do参数定义的函数是马上执行的', function(done) {
+		var app = utils.do(),
+			count = 0;
+
+		for(var i = 0; i < 1000; i++) {
+			app.do(function() {
+				assert.equal(i, count);
+				count++;
+			});
+		}
+
+		done();
+	});
+
+	it('先定义done后再定义do的情况，done在满足全部执行的情况下会再次执行', function(done) {
+		var app = utils.do();
+
+		app.do(function(done) {
+			done(false);
+		});
+
+		app.done(function(a, b) {
+			if(b == true) {
+				done();
+			}
+		});
+
+		app.do(function(done) {
+			done(true);
+		});
+	});
+
+	it('传递给done定义函数的参数和定义do的先后有关，和函数执行的事件无关', function(done) {
+		var app = utils.do();
+
+		app.do(function(done) {
+			setTimeout(function() {
+				done(1);
+			}, 200);
+		});
+
+		app.do(function(done) {
+			setTimeout(function() {
+				done(2);
+			}, 100);
+		});
+
+		app.done(function(a, b) {
+			if(a == 1 && b == 2) {
+				done();
+			}
+		});
+	});
+
 });

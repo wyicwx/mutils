@@ -73,6 +73,7 @@
 		};
 		this.done();
 	};
+	e.Do = Do;
 	e.do = function(fn) {
 		var d = new Do();
 		if(fn) {
@@ -113,22 +114,22 @@
 		next();
 	}
 	
-	function connect() {
+	function Connect() {
 		this.stack = [];
 	}
 
-	connect.prototype.use = function(fn) {
+	Connect.prototype.use = function(fn) {
 		this.stack.push({handler : fn});
 		return this;
 	};
 
-	connect.prototype.fire = function(callback) {
+	Connect.prototype.fire = function(callback) {
 		_next(this.stack, callback);
 	};
 
-	e.Connect = connect;
+	e.Connect = Connect;
 	e.connect = function() {
-		return new connect();
+		return new Connect();
 	};
 })(exports);
 
@@ -159,18 +160,19 @@
 		});
 	};
 
-	function _FnQueue() {
+	function FnQueue() {
 		this.queue = [];
 		this.isRun = false;
 	};
 
-	_FnQueue.prototype.add = function(fn) {
+	FnQueue.prototype.add = function(fn) {
 		this.queue.push(fn);
 		_emit(this);
 	}
 
+	e.FnQueue = FnQueue;
 	e.fnQueue = function() {
-		return new _FnQueue();
+		return new FnQueue();
 	};
 })(exports);
 
@@ -201,19 +203,20 @@
 		});
 	}
 
-	function _FnPond(max) {
+	function FnPond(max) {
 		this.queue = [];
 		this.runing = 0;
 		this.max = max || 100;
 	}
 
-	_FnPond.prototype.add = function(fn) {
+	FnPond.prototype.add = function(fn) {
 		this.queue.push(fn);
 		_emit(this);
 	};
 
+	e.FnPond = FnPond;
 	e.fnPond = function() {
-		return new _FnPond();
+		return new FnPond();
 	};
 })(exports);
 
