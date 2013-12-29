@@ -175,6 +175,49 @@
 })(exports);
 
 /**
+ * 函数池
+ * 保证同时执行函数的数量在一定合法值之内，用于控制并发数
+ * @param {Number} max 最大执行数量，默认值为100
+ * @example
+ * 		var fp = fnPond(1000);
+ * 			fp.add(function(done) {
+ * 				
+ * 			});
+ *
+ * 			fp.add(function() {
+ * 				
+ * 			});
+ */
+(function(e) {
+	function _emit(self) {
+		if(!self.queue.length || self.runing >= self.max) {
+			return;
+		}
+		self.runing++;
+		var fn = self.queue.shift();
+		fn(function() {
+			self.runing--;
+			_emit(self);
+		});
+	}
+
+	function _FnPond(max) {
+		this.queue = [];
+		this.runing = 0;
+		this.max = max || 100;
+	}
+
+	_FnPond.prototype.add = function(fn) {
+		this.queue.push(fn);
+		_emit(this);
+	};
+
+	e.fnPond = function() {
+		return new _FnPond();
+	};
+})(exports);
+
+/**
  * 控制台模拟
  */
 (function(e) {
