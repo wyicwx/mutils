@@ -289,7 +289,7 @@
 		 * @param {Buffer|String} buffer 拼接的字符串 or buffer
 		 */
 		concat: function(buffer) {
-			if(e.utils.isString(buffer)) {
+			if(e.isString(buffer)) {
 				buffer = new Buffer(buffer);
 			}
 			this.length = this.length + buffer.length;
@@ -303,7 +303,7 @@
 		 * @return {Buffer}
 		 */
 		slice: function(size, endSize) {
-			if(e.utils.isNumber(endSize)) {
+			if(e.isNumber(endSize)) {
 				return this._buffer.slice(size, endSize);
 			} else {
 				var oldSize = this.sliced,
