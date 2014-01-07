@@ -11,6 +11,9 @@
     "utils",
     "async"
   ],
+  "scripts": {
+    "test": "mocha"
+  },
   "author": "wyicwx",
   "license": "BSD-2-Clause",
   "bugs": {
