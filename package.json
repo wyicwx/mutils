@@ -1,6 +1,6 @@
 {
   "name": "mutils",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "easy to use utils for nodejs",
   "main": "main.js",
   "repository": {
