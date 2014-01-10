@@ -228,7 +228,7 @@
 		process.stdout.write(prompt + ':');
 		process.stdin.resume();
 		process.stdin.setEncoding('utf-8');
-		process.stdin.on('data', function(chunk) {
+		process.stdin.once('data', function(chunk) {
 			process.stdin.pause();
 			// 去除换行
 			chunk = chunk.replace(/(\n|\r)*$/, '');
